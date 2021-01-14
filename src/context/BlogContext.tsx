@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { BlogPost } from './BlogPost';
 
 
+export interface BlogContextType {
+    data: BlogPost[];
+    addBlogPosts: () => void;
+}
+
 const BlogContext = React.createContext({});
 
 export const BlogProvider = ( {children}:any ) => {
