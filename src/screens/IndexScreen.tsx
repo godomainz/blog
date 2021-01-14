@@ -6,10 +6,7 @@ import { BlogPost } from '../context/BlogPost';
 const IndexScreen = () => {
 
     const  blogPosts  = useContext(BlogContext) as BlogPost[];
-
-
-    console.log(blogPosts);
-
+    
     return (
         <View>
             <Text>Hello from IndexScreen</Text>
