@@ -15,7 +15,9 @@ const navigator = createStackNavigator(
     }
   }
 );
+
 const App = createAppContainer(navigator);
+
 export default () => {
   return <BlogProvider><App /></BlogProvider>
 }
