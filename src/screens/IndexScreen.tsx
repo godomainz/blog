@@ -3,7 +3,8 @@ import { Text, StyleSheet, View, FlatList, Button, TouchableOpacity } from 'reac
 import  { Context , BlogContextType } from '../context/BlogContext';
 import { Feather } from '@expo/vector-icons';
  
-const IndexScreen = () => {
+const IndexScreen = ({navigation}:any) => {
+    console.log(navigation);
 
     const {state, addBlogPost, deleteBlogPost}  = useContext(Context) as BlogContextType;
 
@@ -12,12 +13,14 @@ const IndexScreen = () => {
             <Button title="Add Post" onPress={addBlogPost}/>
             <FlatList keyExtractor={(blogPost)=>blogPost.id.toString()} data={state} renderItem={({item})=>{
                 return  (
-                            <View style={styles.row}>
-                                <Text style={styles.title}>{item.title} - {item.id}</Text>
-                                <TouchableOpacity onPress={()=>deleteBlogPost(item.id)}>
-                                    <Feather style={styles.icon} name="trash"/>
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity onPress={()=>navigation.navigate("Show", { id: item.id})}>
+                                <View style={styles.row}>
+                                    <Text style={styles.title}>{item.title} - {item.id}</Text>
+                                    <TouchableOpacity onPress={()=>deleteBlogPost(item.id)}>
+                                        <Feather style={styles.icon} name="trash"/>
+                                    </TouchableOpacity>
+                                </View>
+                            </TouchableOpacity>
                         );
             }}/>
         </View>
@@ -38,7 +41,8 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     icon: {
-        fontSize: 24
+        fontSize: 24,
+        width: 24
     }
 });
 
