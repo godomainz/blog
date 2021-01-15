@@ -13,7 +13,7 @@ const IndexScreen = ({navigation}:any) => {
             <Button title="Add Post" onPress={addBlogPost}/>
             <FlatList keyExtractor={(blogPost)=>blogPost.id.toString()} data={state} renderItem={({item})=>{
                 return  (
-                            <TouchableOpacity onPress={()=>navigation.navigate("Show", { id: item.id})}>
+                            <TouchableOpacity onPress={()=>navigation.navigate("Show", { id: item.id })}>
                                 <View style={styles.row}>
                                     <Text style={styles.title}>{item.title} - {item.id}</Text>
                                     <TouchableOpacity onPress={()=>deleteBlogPost(item.id)}>
