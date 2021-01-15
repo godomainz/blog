@@ -11,7 +11,7 @@ export interface BlogContextType {
 const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] => {
     switch (action.type){
         case actionTypes.ADD_BLOGPOST:
-            return [...state, { title: `Blog Post#${state.length + 1}` }];
+            return [...state, {id: Math.floor(Math.random() * 99999), title: `Blog Post#${state.length + 1}` }];
         default:
             return state;
     }
