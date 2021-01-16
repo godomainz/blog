@@ -5,11 +5,10 @@ import { Feather } from '@expo/vector-icons';
  
 const IndexScreen = ({navigation}:any) => {
 
-    const {state, addBlogPost, deleteBlogPost}  = useContext(Context) as BlogContextType;
+    const {state, deleteBlogPost}  = useContext(Context) as BlogContextType;
 
     return (
         <View>
-            <Button title="Add Post" onPress={()=>{}}/>
             <FlatList keyExtractor={(blogPost)=>blogPost.id.toString()} data={state} renderItem={({item})=>{
                 return  (
                             <TouchableOpacity onPress={()=>navigation.navigate("Show", { id: item.id })}>

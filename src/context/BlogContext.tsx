@@ -5,7 +5,7 @@ import createDataContext from './createDataContext';
 
 export interface BlogContextType {
     state: BlogPost[];
-    addBlogPost: (title:string, content: string) => void;
+    addBlogPost: (title:string, content: string, callback:()=>any) => void;
     deleteBlogPost: (id: number) => void;
 }
 
@@ -22,14 +22,15 @@ const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] =
 }
 
 const addBlogPost = (dispatch:(action:actionTypes.AddBlogBostAction)=>void) => {
-    return (title:string, content: string) => {
+    return (title:string, content: string, callback:()=>any) => {
         dispatch({
             type: actionTypes.ADD_BLOGPOST,
             payload: {
                 title,
                 content
             }
-        })
+        });
+        callback();
     }
 }
 
