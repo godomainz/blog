@@ -9,6 +9,7 @@ export interface BlogContextType {
     addBlogPost: (title:string, content: string, callback:()=>any) => void;
     deleteBlogPost: (id: number) => void;
     editBlogPost: (id: number,itle:string, content: string, callback:()=>any) => void;
+    getBlogPosts: () => void;
 }
 
 const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] => {
