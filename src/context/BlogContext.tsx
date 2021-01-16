@@ -14,8 +14,6 @@ export interface BlogContextType {
 
 const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] => {
     switch (action.type){
-        case actionTypes.ADD_BLOGPOST:
-            return [...state, {id: Math.floor(Math.random() * 99999), title: action.payload.title, content: action.payload.content }];
         case actionTypes.EDIT_BLOGPOST:
             return state.map((blogPost)=> blogPost.id === action.payload.id ? action.payload : blogPost );
         case actionTypes.DELETE_BLOGPOST:
@@ -28,18 +26,9 @@ const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] =
    
 }
 
-const addBlogPost = (dispatch:(action:actionTypes.AddBlogPostAction)=>void) => {
+const addBlogPost = () => {
     return async (title:string, content: string, callback?:()=>any) => {
-        
         const response = await jsonServer.post('/blogposts', { title, content });
-        // dispatch({
-        //     type: actionTypes.ADD_BLOGPOST,
-        //     payload: {
-        //         title,
-        //         content
-        //     }
-        // });
-
         if(callback){
             callback();
         }
@@ -57,7 +46,8 @@ const getBlogPosts = ( dispatch:(action: actionTypes.GetBlogPostAction) => void)
 }
 
 const deleteBlogPost = (dispatch:(action:actionTypes.DeleteBlogPostAction)=>void) => {
-    return (id: number) => {
+    return async (id: number) => {
+        const response = await jsonServer.delete(`/blogposts/${id}`);
         dispatch({
             type: actionTypes.DELETE_BLOGPOST,
             id: id
