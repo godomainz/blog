@@ -5,14 +5,14 @@ import createDataContext from './createDataContext';
 
 export interface BlogContextType {
     state: BlogPost[];
-    addBlogPost: () => void;
+    addBlogPost: (title:string, content: string) => void;
     deleteBlogPost: (id: number) => void;
 }
 
 const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] => {
     switch (action.type){
         case actionTypes.ADD_BLOGPOST:
-            return [...state, {id: Math.floor(Math.random() * 99999), title: `Blog Post #${state.length + 1}` }];
+            return [...state, {id: Math.floor(Math.random() * 99999), title: action.payload.title, content: action.payload.content }];
         case actionTypes.DELETE_BLOGPOST:
             return state.filter((blogPost)=> blogPost.id !== action.id ); 
         default:
@@ -22,9 +22,13 @@ const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] =
 }
 
 const addBlogPost = (dispatch:(action:actionTypes.AddBlogBostAction)=>void) => {
-    return () => {
+    return (title:string, content: string) => {
         dispatch({
-            type: actionTypes.ADD_BLOGPOST
+            type: actionTypes.ADD_BLOGPOST,
+            payload: {
+                title,
+                content
+            }
         })
     }
 }
