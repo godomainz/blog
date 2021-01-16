@@ -1,6 +1,7 @@
 import * as actionTypes from './Actions';
 import { BlogPost } from './BlogPost';
 import createDataContext from './createDataContext';
+import jsonServer from '../api/jsonServer';
 
 
 export interface BlogContextType {
@@ -18,14 +19,15 @@ const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] =
             return state.map((blogPost)=> blogPost.id === action.payload.id ? action.payload : blogPost );
         case actionTypes.DELETE_BLOGPOST:
             return state.filter((blogPost)=> blogPost.id !== action.id );
-        
+        case actionTypes.GET_BLOGPOSTS:
+            return action.payload;
         default:
             return state;
     }
    
 }
 
-const addBlogPost = (dispatch:(action:actionTypes.AddBlogBostAction)=>void) => {
+const addBlogPost = (dispatch:(action:actionTypes.AddBlogPostAction)=>void) => {
     return (title:string, content: string, callback?:()=>any) => {
         dispatch({
             type: actionTypes.ADD_BLOGPOST,
@@ -41,7 +43,17 @@ const addBlogPost = (dispatch:(action:actionTypes.AddBlogBostAction)=>void) => {
     }
 }
 
-const deleteBlogPost = (dispatch:(action:actionTypes.DeleteBlogBostAction)=>void) => {
+const getBlogPosts = ( dispatch:(action: actionTypes.GetBlogPostAction) => void) => {
+    return async () => {
+        const response = await jsonServer.get('/blogposts');
+        dispatch({
+            type: actionTypes.GET_BLOGPOSTS,
+            payload: response.data
+        });
+    }
+}
+
+const deleteBlogPost = (dispatch:(action:actionTypes.DeleteBlogPostAction)=>void) => {
     return (id: number) => {
         dispatch({
             type: actionTypes.DELETE_BLOGPOST,
@@ -50,7 +62,7 @@ const deleteBlogPost = (dispatch:(action:actionTypes.DeleteBlogBostAction)=>void
     }
 }
 
-const editBlogPost = (dispatch:(action:actionTypes.EditBlogBostAction)=>void) => {
+const editBlogPost = (dispatch:(action:actionTypes.EditBlogPostAction)=>void) => {
     return (id:number, title:string, content: string, callback?:()=>any) => {
         dispatch({
             type: actionTypes.EDIT_BLOGPOST,
@@ -67,4 +79,4 @@ const editBlogPost = (dispatch:(action:actionTypes.EditBlogBostAction)=>void) =>
     }
 }
 
-export const { Context, Provider } = createDataContext(blogReducer, { addBlogPost, deleteBlogPost, editBlogPost }, [{ id: 1, title: 'Test Post', content: 'Test Content' }]);
+export const { Context, Provider } = createDataContext(blogReducer, { addBlogPost, deleteBlogPost, editBlogPost, getBlogPosts }, []);
