@@ -7,14 +7,18 @@ export interface BlogContextType {
     state: BlogPost[];
     addBlogPost: (title:string, content: string, callback:()=>any) => void;
     deleteBlogPost: (id: number) => void;
+    editBlogPost: (id: number,itle:string, content: string, callback:()=>any) => void;
 }
 
 const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] => {
     switch (action.type){
         case actionTypes.ADD_BLOGPOST:
             return [...state, {id: Math.floor(Math.random() * 99999), title: action.payload.title, content: action.payload.content }];
+        case actionTypes.EDIT_BLOGPOST:
+            return state.map((blogPost)=> blogPost.id === action.payload.id ? action.payload : blogPost );
         case actionTypes.DELETE_BLOGPOST:
-            return state.filter((blogPost)=> blogPost.id !== action.id ); 
+            return state.filter((blogPost)=> blogPost.id !== action.id );
+        
         default:
             return state;
     }
@@ -22,7 +26,7 @@ const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] =
 }
 
 const addBlogPost = (dispatch:(action:actionTypes.AddBlogBostAction)=>void) => {
-    return (title:string, content: string, callback:()=>any) => {
+    return (title:string, content: string, callback?:()=>any) => {
         dispatch({
             type: actionTypes.ADD_BLOGPOST,
             payload: {
@@ -30,7 +34,10 @@ const addBlogPost = (dispatch:(action:actionTypes.AddBlogBostAction)=>void) => {
                 content
             }
         });
-        callback();
+
+        if(callback){
+            callback();
+        }
     }
 }
 
@@ -43,4 +50,21 @@ const deleteBlogPost = (dispatch:(action:actionTypes.DeleteBlogBostAction)=>void
     }
 }
 
-export const { Context, Provider } = createDataContext(blogReducer, { addBlogPost, deleteBlogPost }, [{ id: 1, title: 'Test Post', content: 'Test Content' }]);
+const editBlogPost = (dispatch:(action:actionTypes.EditBlogBostAction)=>void) => {
+    return (id:number, title:string, content: string, callback?:()=>any) => {
+        dispatch({
+            type: actionTypes.EDIT_BLOGPOST,
+            payload: {
+                id,
+                title,
+                content
+            }
+        });
+        
+        if(callback){
+            callback();
+        }
+    }
+}
+
+export const { Context, Provider } = createDataContext(blogReducer, { addBlogPost, deleteBlogPost, editBlogPost }, [{ id: 1, title: 'Test Post', content: 'Test Content' }]);

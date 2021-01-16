@@ -1,14 +1,14 @@
-import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import React, {  useContext } from 'react';
+import { StyleSheet } from 'react-native';
+import  { Context , BlogContextType } from '../context/BlogContext';
+import BlogPostForm from '../components/BlogPostForm';
+import { BlogPost } from '../context/BlogPost';
 
-const EditScreen = ( {navigation}:any ) => {
-    const id = navigation.getParam('id');
-    
-    return (
-        <View>
-            <Text>Hello from EditScreen {id}</Text>
-        </View>
-    );
+const EditScreen = ( { navigation }:any ) => {
+    const { state, editBlogPost }  = useContext(Context) as BlogContextType;
+    const blogPost: BlogPost = state.find((blogPost)=> blogPost.id === navigation.getParam('id'))!;
+
+    return <BlogPostForm initialValues={blogPost} onSubmit={(title, content)=>editBlogPost(blogPost.id, title, content, ()=>navigation.pop())}/>;
 
 }
 
