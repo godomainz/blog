@@ -29,14 +29,16 @@ const blogReducer = (state: BlogPost[], action: actionTypes.Action):BlogPost[] =
 }
 
 const addBlogPost = (dispatch:(action:actionTypes.AddBlogPostAction)=>void) => {
-    return (title:string, content: string, callback?:()=>any) => {
-        dispatch({
-            type: actionTypes.ADD_BLOGPOST,
-            payload: {
-                title,
-                content
-            }
-        });
+    return async (title:string, content: string, callback?:()=>any) => {
+        
+        const response = await jsonServer.post('/blogposts', { title, content });
+        // dispatch({
+        //     type: actionTypes.ADD_BLOGPOST,
+        //     payload: {
+        //         title,
+        //         content
+        //     }
+        // });
 
         if(callback){
             callback();
