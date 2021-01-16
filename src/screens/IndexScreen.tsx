@@ -4,7 +4,6 @@ import  { Context , BlogContextType } from '../context/BlogContext';
 import { Feather } from '@expo/vector-icons';
  
 const IndexScreen = ({navigation}:any) => {
-    console.log(navigation);
 
     const {state, addBlogPost, deleteBlogPost}  = useContext(Context) as BlogContextType;
 
